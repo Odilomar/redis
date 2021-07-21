@@ -11,14 +11,17 @@ export class CacheService {
   async retrieveCache(key: string, callback: () => Promise<string>) {
     const redis = await this.redisService.getClient();
 
-    const [err, keyData] = await to(redis.get(key));
-    if (!!err) throw new InternalServerErrorException(err);
+    const [getRedisError, keyData] = await to(redis.get(key));
+    if (!!getRedisError) throw new InternalServerErrorException(getRedisError);
     if (keyData != null) return keyData;
 
-    const [error, callbackData] = await to(callback());
-    if (!!error) throw new InternalServerErrorException(error);
+    const [callbackError, callbackData] = await to(callback());
+    if (!!callbackError) throw new InternalServerErrorException(callbackError);
 
-    await redis.setex(key, noActivity, callbackData);
+    const [setRedisError] = await to(
+      redis.setex(key, noActivity, callbackData),
+    );
+    if (!!setRedisError) throw new InternalServerErrorException(setRedisError);
 
     return callbackData;
   }
