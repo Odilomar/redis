@@ -2,15 +2,18 @@ import { Module } from '@nestjs/common';
 import { RedisModule } from 'nestjs-redis';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import path from 'path';
 import { config } from 'dotenv';
+import { CacheModule } from './cache/cache.module';
 
 config();
 
 const { REDIS_HOST, REDIS_PORT } = process.env;
 
 @Module({
-  imports: [RedisModule.register({ host: REDIS_HOST, port: Number(REDIS_PORT) })],
+  imports: [
+    RedisModule.register({ host: REDIS_HOST, port: Number(REDIS_PORT) }), 
+    CacheModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
