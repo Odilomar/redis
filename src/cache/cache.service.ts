@@ -8,17 +8,17 @@ const noActivity = 10;
 export class CacheService {
   constructor(private readonly redisService: RedisService) {}
 
-  async retrieveCache(key: string, callback: () => Promise<any>) {
+  async retrieveCache(key: string, callback: () => Promise<string>) {
     const redis = await this.redisService.getClient();
 
     const [err, keyData] = await to(redis.get(key));
     if (!!err) throw new InternalServerErrorException(err);
     if (keyData != null) return keyData;
 
-    const [error, callbackData] = await to(Promise.resolve(callback()));
+    const [error, callbackData] = await to(callback());
     if (!!error) throw new InternalServerErrorException(error);
 
-    await redis.setex(key, noActivity, JSON.stringify(callbackData));
+    await redis.setex(key, noActivity, callbackData);
 
     return callbackData;
   }

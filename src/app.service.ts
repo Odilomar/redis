@@ -29,7 +29,7 @@ export class AppService {
       const [err, { data }] = await to(axios.get(apiUrl));
       if (!!err) throw new InternalServerErrorException(err);
 
-      return data;
+      return JSON.stringify({ data });
     };
 
     return this.cacheService.retrieveCache(cacheKey, callback);
