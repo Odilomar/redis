@@ -5,7 +5,6 @@ import { CacheService } from './cache/cache.service';
 
 const url = 'https://jsonplaceholder.typicode.com/photos';
 const defaultRedisKey = 'teste';
-const noActivity = 10; // 60 days in seconds
 
 @Injectable()
 export class AppService {

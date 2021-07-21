@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import to from 'await-to-js';
 import { RedisService } from 'nestjs-redis';
 
-const noActivity = 10; // 60 days in seconds
+const noActivity = 10;
 
 @Injectable()
 export class CacheService {
