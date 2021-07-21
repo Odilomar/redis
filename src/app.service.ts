@@ -25,7 +25,7 @@ export class AppService {
     const cacheKey = customParam(defaultRedisKey);
     const apiUrl = customParam(url);
 
-    const callback = async (): Promise<string> => {
+    const callback = async () => {
       const [err, { data }] = await to(axios.get(apiUrl));
       if (!!err) throw new InternalServerErrorException(err);
 
